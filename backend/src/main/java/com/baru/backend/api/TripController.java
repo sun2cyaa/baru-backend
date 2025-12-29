@@ -20,4 +20,11 @@ public class TripController {
     public TripSearchResponse search(@RequestBody TripSearchRequest tripSearchRequest) {
         return tripSearchService.search(tripSearchRequest);
     }
+
+    @ExceptionHandler(UnsupportedOperationException.class)
+    @ResponseStatus(org.springframework.http.HttpStatus.NOT_IMPLEMENTED)
+    public String handleNotImplemented(UnsupportedOperationException e) {
+        return e.getMessage();
+    }
+
 }
