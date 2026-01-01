@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Builder
@@ -14,12 +13,12 @@ public class TripSearchResponse {
     private Exchange exchange;
     private Budget budget;
     private List<FlightCard> flights;
-    private List<Object> hotels; // 나중에 Hotel DTO로 교체
+    private List<HotelCard> hotels;
 
     @Getter
     @Builder
     public static class Exchange {
-        private String base;
+        private String base;     // "KRW"
         private Rates rates;
         private String updatedAt;
     }
@@ -42,23 +41,36 @@ public class TripSearchResponse {
     @Getter
     @Builder
     public static class FlightCard {
-        private String airline;
-        private int priceWon;
-        private String departureAirport;
-        private String departureTime;
-        private String arrivalAirport;
-        private String arrivalTime;
-        private int durationMinutes;
-        private int stops;
-        private List<Segment> segments;
+        private String airline;          // "KE"
+        private int priceWon;           // 왕복(편도2개 합산) 총액
+        private String departureAirport; // 출발공항
+        private String departureTime;    // 출발시간(OUT 기준)
+        private String arrivalAirport;   // 도착공항(추천 목적지)
+        private String arrivalTime;      // 도착시간(OUT 기준)
+        private int durationMinutes;     // OUT 기준
+        private int stops;               // OUT 기준
+        private List<Segment> segments;  // OUT 기준(필요하면 IN도 확장 가능)
     }
 
-    public record Segment(
-            String flightNo,
-            String from,
-            String to,
-            String depTime,
-            String arrTime
-    ) {}
-}
+    @Getter
+    @Builder
+    public static class Segment {
+        private String flightNo;
+        private String from;
+        private String to;
+        private String depTime;
+        private String arrTime;
+    }
 
+    @Getter
+    @Builder
+    public static class HotelCard {
+        private String hotelId;
+        private String name;
+        private String cityCode;
+
+        private int totalWon;     // 체류기간 총액
+        private int perNightWon;  // 1박당
+        private int nights;
+    }
+}

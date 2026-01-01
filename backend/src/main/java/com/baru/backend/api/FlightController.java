@@ -25,14 +25,21 @@ public class FlightController {
             @RequestParam(defaultValue = "5") int max,
             @RequestParam(defaultValue = "KRW") String currencyCode
     ) {
-        return amadeusFlightService.searchOffers(
-                originLocationCode,
-                destinationLocationCode,
-                departureDate,
-                returnDate,
-                adults,
-                max,
-                currencyCode
+        if (returnDate == null || returnDate.isBlank()) {
+            return amadeusFlightService.searchOffersOneWay(
+                    originLocationCode, destinationLocationCode, departureDate, adults, max, currencyCode
+            );
+        }
+        return amadeusFlightService.searchOffersRoundTrip(
+                originLocationCode, destinationLocationCode, departureDate, returnDate, adults, max, currencyCode
         );
+    }
+
+    @GetMapping("/direct-destinations")
+    public Map<String, Object> directDestinations(
+            @RequestParam String departureAirportCode,
+            @RequestParam(defaultValue = "50") int max
+    ) {
+        return amadeusFlightService.directDestinations(departureAirportCode, max);
     }
 }

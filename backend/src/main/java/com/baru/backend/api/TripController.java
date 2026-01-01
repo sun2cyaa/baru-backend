@@ -1,6 +1,5 @@
 package com.baru.backend.api;
 
-
 import com.baru.backend.dto.trip.TripSearchRequest;
 import com.baru.backend.dto.trip.TripSearchResponse;
 import com.baru.backend.service.TripSearchService;
@@ -17,14 +16,7 @@ public class TripController {
     }
 
     @PostMapping("/search")
-    public TripSearchResponse search(@RequestBody TripSearchRequest tripSearchRequest) {
-        return tripSearchService.search(tripSearchRequest);
+    public TripSearchResponse search(@RequestBody TripSearchRequest req) {
+        return tripSearchService.search(req);
     }
-
-    @ExceptionHandler(UnsupportedOperationException.class)
-    @ResponseStatus(org.springframework.http.HttpStatus.NOT_IMPLEMENTED)
-    public String handleNotImplemented(UnsupportedOperationException e) {
-        return e.getMessage();
-    }
-
 }
